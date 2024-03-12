@@ -45,14 +45,11 @@ var translateCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 		switch target {
-		case "morse":
-		case "m":
-			fmt.Println(translate.TranslateToMorseCode(input))
 		case "plain":
 		case "p":
 			fmt.Println(translate.TranslateToPlainText(input))
 		default:
-			fmt.Println("invalid target")
+			fmt.Println(translate.TranslateToMorseCode(input))
 		}
 	},
 }
@@ -67,4 +64,5 @@ func init() {
 	// translateCmd.PersistentFlags().String("foo", "", "A help for foo")
 	translateCmd.Flags().StringVarP(&target, "target", "t", "morse", "translation target")
 	translateCmd.Flags().StringVarP(&input, "input", "i", "", "string to be translated")
+	translateCmd.MarkFlagRequired("input")
 }
