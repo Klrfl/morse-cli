@@ -2,6 +2,12 @@
 
 This is a very simple CLI for translating to and from morse code, written in Go
 
+## Installation
+
+run this command. If you don't have Go [download and install it](https://go.dev/dl) first.
+
+`go install github.com/klrfl/morse-translator`
+
 ## Usage
 
 Currently there is only one command in this program: `translate`. It consists of
