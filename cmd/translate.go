@@ -70,6 +70,28 @@ func translateToMorseCode(sentence string) string {
 	return result.String()
 }
 
+func translateToPlainText(sentence string) string {
+	if len(sentence) <= 0 {
+		return ""
+	}
+
+	var result strings.Builder
+
+	inputSentence := strings.Split(sentence, "/")
+	for _, morseWord := range inputSentence {
+		for _, morseChar := range strings.Split(strings.Trim(morseWord, " "), " ") {
+			for letter, code := range translationTable {
+				if code == morseChar {
+					result.WriteString(letter)
+				}
+			}
+		}
+		result.WriteString(" ")
+	}
+
+	return result.String()
+}
+
 var translationTable map[string]string = map[string]string{
 	"A": ".-",
 	"B": "-...",
@@ -109,6 +131,24 @@ var translationTable map[string]string = map[string]string{
 	"7": "--...",
 	"8": "---..",
 	"9": "----.",
+
+	"&": ".-...",
+	"'": ".----.",
+	"@": ".--.-.",
+	")": "-.--.-",
+	"(": "-.--.",
+	":": "---...",
+	",": "--..--",
+	"=": "-...-",
+	"!": "-.-.--",
+	".": ".-.-.-",
+	"-": "-....-",
+	"×": "-..-",
+	//TODO: add % sign
+	"+":  ".-.-.",
+	"\"": ".-..-.",
+	"?":  "..--..",
+	"/":  "-..-.",
 }
 
 func init() {
@@ -119,8 +159,5 @@ func init() {
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
 	// translateCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
 	translateCmd.Flags().StringVarP(&target, "target", "t", "morse", "translation target")
 }
