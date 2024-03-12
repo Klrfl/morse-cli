@@ -32,6 +32,7 @@ var translationTable map[string]string = map[string]string{
 	"X": "-..-",
 	"Y": "-.--",
 	"Z": "--..",
+	" ": "/",
 
 	"0": "-----",
 	"1": ".----",
@@ -62,6 +63,6 @@ func translator(word string) string {
 }
 
 func main() {
-	fmt.Println(translator("kimi"))
+	fmt.Println(translator("we can translate whole sentences now"))
 	fmt.Println(translator(""))
 }
