@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 klrfl <efrayanglain@gmail.com>
+Copyright © 2024 Efraim Munthe <efrayanglain@gmail.com>
 
 */
 package cmd
