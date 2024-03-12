@@ -37,14 +37,19 @@ var translateCmd = &cobra.Command{
 			}
 		}
 
-		return fmt.Errorf("invalid translation target: ", args[0])
+		return fmt.Errorf("invalid translation target: %s", target)
 	},
 
 	Run: func(cmd *cobra.Command, args []string) {
-		if target == "morse" {
+		switch target {
+		case "morse":
+		case "m":
 			fmt.Println(translateToMorseCode(args[0]))
-		} else {
+		case "plain":
+		case "p":
 			fmt.Println(translateToPlainText(args[0]))
+		default:
+			fmt.Println("invalid target")
 		}
 	},
 }
