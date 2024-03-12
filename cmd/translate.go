@@ -1,5 +1,5 @@
 /*
-Copyright © 2024 NAME HERE <efrayanglain@gmail.com>
+Copyright © 2024 klrfl <efrayanglain@gmail.com>
 
 */
 package cmd
@@ -11,16 +11,35 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var target string
+
 // translateCmd represents the translate command
 var translateCmd = &cobra.Command{
 	Use:   "translate",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Short: "The translate command translates either to morse code or to plain text.",
+	Long: `The translate command translates either to morse code or to plain text.
+  Use the flags -t (or --target) to specify target (morse or plain). For example:
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+  --target m takes text and translates it into morse code
+  --target p takes morse and translates it into plain text
+  `,
+
+	Args: func(cmd *cobra.Command, args []string) error {
+		if err := cobra.MaximumNArgs(1)(cmd, args); err != nil {
+			return fmt.Errorf("too much arguments")
+		}
+
+		options := []string{"morse", "m", "plain", "p"}
+
+		for _, value := range options {
+			if target == value {
+				return nil
+			}
+		}
+
+		return fmt.Errorf("invalid translation target: ", args[0])
+	},
+
 	Run: func(cmd *cobra.Command, args []string) {
 		fmt.Println("translate called")
 	},
@@ -94,5 +113,5 @@ func init() {
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// translateCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	translateCmd.Flags().StringVarP(&target, "target", "t", "morse", "translation target")
 }
