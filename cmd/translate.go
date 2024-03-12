@@ -6,12 +6,15 @@ package cmd
 
 import (
 	"fmt"
-	"strings"
 
+	"github.com/klrfl/morse-translator/pkg/translate"
 	"github.com/spf13/cobra"
 )
 
-var target string
+var (
+	target string
+	input  string
+)
 
 // translateCmd represents the translate command
 var translateCmd = &cobra.Command{
@@ -44,111 +47,14 @@ var translateCmd = &cobra.Command{
 		switch target {
 		case "morse":
 		case "m":
-			fmt.Println(translateToMorseCode(args[0]))
+			fmt.Println(translate.TranslateToMorseCode(input))
 		case "plain":
 		case "p":
-			fmt.Println(translateToPlainText(args[0]))
+			fmt.Println(translate.TranslateToPlainText(input))
 		default:
 			fmt.Println("invalid target")
 		}
 	},
-}
-
-func translateToMorseCode(sentence string) string {
-	if len(sentence) <= 0 {
-		return ""
-	}
-
-	var result strings.Builder
-
-	for _, char := range strings.ToUpper(sentence) {
-		varc := string(char)
-		result.WriteString(translationTable[varc])
-		result.WriteString(" ")
-	}
-
-	return result.String()
-}
-
-func translateToPlainText(sentence string) string {
-	if len(sentence) <= 0 {
-		return ""
-	}
-
-	var result strings.Builder
-
-	inputSentence := strings.Split(sentence, "/")
-	for _, morseWord := range inputSentence {
-		for _, morseChar := range strings.Split(strings.Trim(morseWord, " "), " ") {
-			for letter, code := range translationTable {
-				if code == morseChar {
-					result.WriteString(letter)
-				}
-			}
-		}
-		result.WriteString(" ")
-	}
-
-	return result.String()
-}
-
-var translationTable map[string]string = map[string]string{
-	"A": ".-",
-	"B": "-...",
-	"C": "-.-.",
-	"D": "-..",
-	"E": ".",
-	"F": "..-.",
-	"G": "--.",
-	"H": "....",
-	"I": "..",
-	"J": ".----",
-	"K": "-.-",
-	"L": ".-..",
-	"M": "--",
-	"N": "-.",
-	"O": "---",
-	"P": ".--.",
-	"Q": "--.-",
-	"R": ".-.",
-	"S": "...",
-	"T": "-",
-	"U": "..-",
-	"V": "...-",
-	"W": ".--",
-	"X": "-..-",
-	"Y": "-.--",
-	"Z": "--..",
-	" ": "/",
-
-	"0": "-----",
-	"1": ".----",
-	"2": "..---",
-	"3": "...--",
-	"4": "....-",
-	"5": ".....",
-	"6": "-....",
-	"7": "--...",
-	"8": "---..",
-	"9": "----.",
-
-	"&": ".-...",
-	"'": ".----.",
-	"@": ".--.-.",
-	")": "-.--.-",
-	"(": "-.--.",
-	":": "---...",
-	",": "--..--",
-	"=": "-...-",
-	"!": "-.-.--",
-	".": ".-.-.-",
-	"-": "-....-",
-	"×": "-..-",
-	//TODO: add % sign
-	"+":  ".-.-.",
-	"\"": ".-..-.",
-	"?":  "..--..",
-	"/":  "-..-.",
 }
 
 func init() {
@@ -160,4 +66,5 @@ func init() {
 	// and all subcommands, e.g.:
 	// translateCmd.PersistentFlags().String("foo", "", "A help for foo")
 	translateCmd.Flags().StringVarP(&target, "target", "t", "morse", "translation target")
+	translateCmd.Flags().StringVarP(&input, "input", "i", "", "string to be translated")
 }
