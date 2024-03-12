@@ -41,18 +41,22 @@ var translateCmd = &cobra.Command{
 	},
 
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("translate called")
+		if target == "morse" {
+			fmt.Println(translateToMorseCode(args[0]))
+		} else {
+			fmt.Println(translateToPlainText(args[0]))
+		}
 	},
 }
 
-func translator(word string) string {
-	if len(word) <= 0 {
+func translateToMorseCode(sentence string) string {
+	if len(sentence) <= 0 {
 		return ""
 	}
 
 	var result strings.Builder
 
-	for _, char := range strings.ToUpper(word) {
+	for _, char := range strings.ToUpper(sentence) {
 		varc := string(char)
 		result.WriteString(translationTable[varc])
 		result.WriteString(" ")
