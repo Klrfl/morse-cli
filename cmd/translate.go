@@ -19,12 +19,15 @@ var (
 // translateCmd represents the translate command
 var translateCmd = &cobra.Command{
 	Use:   "translate",
-	Short: "The translate command translates either to morse code or to plain text.",
+	Short: "The translate command translates to and from morse code.",
 	Long: `The translate command translates either to morse code or to plain text.
+  It supports international and american morse code.
   Use the flags -t (or --target) to specify target (morse or plain). For example:
 
   --target m takes text and translates it into morse code
   --target p takes morse and translates it into plain text
+
+  To opt-in to american mode, you can add the --american (-a for short) flag.
   `,
 
 	Args: func(cmd *cobra.Command, args []string) error {
