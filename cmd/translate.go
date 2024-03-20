@@ -1,6 +1,5 @@
 /*
 Copyright © 2024 Efraim Munthe <efrayanglain@gmail.com>
-
 */
 package cmd
 
@@ -12,8 +11,9 @@ import (
 )
 
 var (
-	target string
-	input  string
+	target   string
+	input    string
+	american bool
 )
 
 // translateCmd represents the translate command
@@ -44,13 +44,26 @@ var translateCmd = &cobra.Command{
 	},
 
 	Run: func(cmd *cobra.Command, args []string) {
-		switch target {
-		case "plain":
-		case "p":
-			fmt.Println(translate.TranslateToPlainText(input))
-		default:
-			fmt.Println(translate.TranslateToMorseCode(input))
+		if american {
+			switch target {
+			case "plain", "p":
+				fmt.Println(translate.AmericanTranslateToPlainText(input))
+			case "morse", "m":
+				fmt.Println(translate.AmericanTranslateToMorseCode(input))
+			default:
+				fmt.Println("invalid target")
+			}
+			return
 		}
+		switch target {
+		case "plain", "p":
+			fmt.Println(translate.TranslateToPlainText(input))
+		case "morse", "m":
+			fmt.Println(translate.TranslateToMorseCode(input))
+		default:
+			fmt.Println("invalid target")
+		}
+
 	},
 }
 
@@ -65,4 +78,6 @@ func init() {
 	translateCmd.Flags().StringVarP(&target, "target", "t", "morse", "translation target")
 	translateCmd.Flags().StringVarP(&input, "input", "i", "", "string to be translated")
 	translateCmd.MarkFlagRequired("input")
+
+	translateCmd.Flags().BoolVarP(&american, "american", "a", false, "opt in to american morse code")
 }
