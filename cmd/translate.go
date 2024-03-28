@@ -12,7 +12,6 @@ import (
 
 var (
 	target   string
-	input    string
 	american bool
 )
 
@@ -47,6 +46,7 @@ var translateCmd = &cobra.Command{
 	},
 
 	Run: func(cmd *cobra.Command, args []string) {
+		input := args[0]
 		if american {
 			switch target {
 			case "plain", "p":
@@ -79,7 +79,6 @@ func init() {
 	// and all subcommands, e.g.:
 	// translateCmd.PersistentFlags().String("foo", "", "A help for foo")
 	translateCmd.Flags().StringVarP(&target, "target", "t", "morse", "translation target")
-	translateCmd.Flags().StringVarP(&input, "input", "i", "", "string to be translated")
 	translateCmd.MarkFlagRequired("input")
 
 	translateCmd.Flags().BoolVarP(&american, "american", "a", false, "opt in to american morse code")
